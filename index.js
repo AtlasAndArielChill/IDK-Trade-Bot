@@ -18,9 +18,10 @@ const SERVER_LINK_PATTERN = /https:\/\/www\.roblox\.com\/share\?code=[^&]+&type=
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 // Event that triggers when the bot is ready and connected to Discord
-client.once('ready', async () => {
+// The event name 'ready' has been changed to 'clientReady' to avoid the deprecation warning
+client.once('clientReady', async () => {
     console.log(`Logged in as ${client.user.tag}!`);
-
+    
     // Set the bot's presence (optional but good practice)
     client.user.setPresence({
         activities: [{ name: '/trade', type: 3 }],
@@ -108,7 +109,7 @@ client.on('interactionCreate', async interaction => {
     try {
         // Send the embed to the designated trade channel
         await tradeChannel.send({ embeds: [tradeEmbed] });
-
+        
         // Send a confirmation message back to the user
         await interaction.editReply({ content: '✅ Your trade request has been successfully sent to the trade channel!' });
     } catch (error) {
