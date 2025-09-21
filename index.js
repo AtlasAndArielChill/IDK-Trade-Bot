@@ -5,6 +5,8 @@
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 // Import the dotenv library to load environment variables from the .env file
 require('dotenv').config();
+// Import the express library to create a web server for Render's health check
+const express = require('express');
 
 // Define the ID of the channel where trade requests will be sent
 const TRADE_CHANNEL_ID = '1419373453626183760';
@@ -120,3 +122,15 @@ client.on('interactionCreate', async interaction => {
 
 // Log in to Discord with the bot token from the .env file
 client.login(process.env.DISCORD_BOT_TOKEN);
+
+// Create a simple express server to satisfy Render's health check
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+    res.status(200).send('Bot is running and healthy!');
+});
+
+app.listen(PORT, () => {
+    console.log(`Web server listening on port ${PORT}`);
+});
